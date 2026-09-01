@@ -1,0 +1,12 @@
+/vendor/
+/node_modules/
+
+# Архивы выпусков в репозиторий не коммитятся: их собирает
+# .github/workflows/release.yml и прикладывает к GitHub Release.
+/download/
+/sf-form-sender*.zip
+/SFformSender*.zip
+
+.DS_Store
+__pycache__/
+*.pyc

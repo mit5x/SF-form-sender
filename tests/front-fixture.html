@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>Перехват форм — стенд</title>
+	<link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+<!--
+	Стенд для проверки front.js.
+
+	Три формы намеренно разные:
+	  A — «минимальный режим»: только атрибут перехвата, ни контейнеров,
+	      ни капчи, кнопка завёрнута в обёртку;
+	  B — вебмастер разместил контейнеры сам и написал своё имя формы;
+	  C — обычная форма без атрибута: плагин не должен её трогать.
+-->
+
+<form id="a" sf-form-sender-interceptor>
+	<label for="a-name">Ваше имя *</label>
+	<input id="a-name" name="name" type="text" required>
+
+	<label for="a-mail">Электронная почта</label>
+	<input id="a-mail" name="email" type="email">
+
+	<div class="wrap"><button type="submit">Отправить</button></div>
+</form>
+
+<form id="b" data-sf-form-sender="калькулятор">
+	<div class="sf_form_sender_interceptor_fail my-fail"></div>
+	<label for="b-name">Имя</label>
+	<input id="b-name" name="name" type="text">
+	<div class="sf_form_sender_interceptor_success my-ok"></div>
+	<button type="submit">Отправить</button>
+</form>
+
+<form id="c">
+	<input name="name" type="text">
+	<button type="submit">Отправить</button>
+</form>
+
+<!--
+	D — вебмастер снял штатную проверку браузера и проверяет форму сам,
+	на отменяемом событии плагина. Плагин не должен мешать и этому.
+-->
+<form id="d" sf-form-sender-interceptor="своя-проверка" novalidate>
+	<input id="d-name" name="name" type="text" required>
+	<button type="submit">Отправить</button>
+</form>
+
+<script>
+	/* Что обычно печатает PHP через wp_localize_script. */
+	window.SF_FORM_SENDER = {
+		ajaxUrl: '/admin-ajax.php',
+		action: 'sf_fs_submit',
+		ticket: '1000000.подпись',
+		selector: 'form[sf-form-sender-interceptor], form[data-sf-form-sender]',
+		attrs: ['sf-form-sender-interceptor', 'data-sf-form-sender'],
+		classes: {
+			fail: 'sf_form_sender_interceptor_fail',
+			success: 'sf_form_sender_interceptor_success',
+			captcha: 'sf_form_sender_interceptor_captcha'
+		},
+		honeypot: 'website',
+		trackGet: true,
+		cookie: 'sf_fs_track',
+		seenCookie: 'sf_fs_seen',
+		maxValues: 20,
+		maxParams: 40,
+		captcha: { provider: 'none' },
+		captchaField: 'sf_fs_captcha',
+		texts: {
+			network: 'Сервер не ответил.',
+			error: 'Общая ошибка.',
+			sending: 'Отправляем…'
+		}
+	};
+
+	/* Подставной сервер: запоминает запросы и отвечает тем, что закажет тест. */
+	window.__sent = [];
+	window.__reply = { success: true, message: 'Спасибо, заявка принята.', id: 42 };
+	window.__failNetwork = false;
+
+	window.fetch = function (url, options) {
+		var body = {};
+		options.body.forEach(function (value, key) {
+			if (body[key] === undefined) body[key] = value;
+			else if (Array.isArray(body[key])) body[key].push(value);
+			else body[key] = [body[key], value];
+		});
+		window.__sent.push({ url: url, body: body });
+
+		if (window.__failNetwork) return Promise.reject(new Error('offline'));
+
+		return Promise.resolve({
+			json: function () { return Promise.resolve(window.__reply); }
+		});
+	};
+
+	/* Тема может отменить отправку — проверяем и это. */
+	window.__cancelA = false;
+	window.__events = [];
+	document.addEventListener('DOMContentLoaded', function () {
+		var a = document.getElementById('a');
+		a.addEventListener('sf-form-sender:before-send', function (e) {
+			window.__events.push('before-send');
+			if (window.__cancelA) e.preventDefault();
+		});
+		a.addEventListener('sf-form-sender:success', function (e) {
+			window.__events.push('success:' + e.detail.message + ':' + e.detail.id);
+		});
+		a.addEventListener('sf-form-sender:error', function (e) {
+			window.__events.push('error:' + e.detail.code);
+		});
+
+		var d = document.getElementById('d');
+		d.addEventListener('sf-form-sender:before-send', function (e) {
+			if (!d.elements.name.value.trim()) {
+				window.__ownCheck = 'сработала своя проверка';
+				e.preventDefault();
+			}
+		});
+	});
+</script>
+<script src="front.js"></script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+/**
+ * SF Form sender — оформление страниц админки.
+ *
+ * Опирается на штатные классы WordPress, добавляя только то, чего в них нет.
+ */
+
+.sf-fs-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin: 0 0 6px;
+}
+
+.sf-fs-head h1 {
+	margin: 0;
+}
+
+/* Переключатель языка интерфейса --------------------------------------- */
+
+.sf-fs-lang {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+}
+
+.sf-fs-lang label {
+	font-weight: 600;
+}
+
+.sf-fs-lang__note {
+	color: #646970;
+	font-size: 12px;
+}
+
+/* Вкладки и панель ------------------------------------------------------ */
+
+.sf-fs-tabs {
+	margin-bottom: 0;
+}
+
+.sf-fs-panel {
+	padding: 4px 20px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-top: 0;
+}
+
+.sf-fs-intro {
+	max-width: 780px;
+	margin: 16px 0 0;
+	color: #3c434a;
+}
+
+.sf-fs-table .description {
+	max-width: 640px;
+}
+
+.sf-fs-group th {
+	padding-bottom: 0;
+}
+
+.sf-fs-group h3 {
+	margin: 18px 0 0;
+	padding-top: 14px;
+	border-top: 1px solid #dcdcde;
+}
+
+.sf-fs-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.sf-fs-peek {
+	margin-left: 6px !important;
+}
+
+/* Проверка SMTP --------------------------------------------------------- */
+
+.sf-fs-smtp-test {
+	margin: 8px 0 20px;
+	padding: 16px 18px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+}
+
+.sf-fs-smtp-test h3 {
+	margin-top: 0;
+}
+
+.sf-fs-smtp-test__bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+
+.sf-fs-smtp-test__warn {
+	color: #646970;
+	font-size: 13px;
+}
+
+.sf-fs-smtp-test__warn.is-dirty {
+	color: #b32d2e;
+	font-weight: 600;
+}
+
+.sf-fs-log {
+	max-height: 340px;
+	margin: 12px 0 0;
+	padding: 12px 14px;
+	overflow: auto;
+	background: #1d2327;
+	border-radius: 6px;
+	color: #dfe3e6;
+	font: 12px/1.55 Consolas, Menlo, Monaco, monospace;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.sf-fs-smtp-test__result {
+	margin: 10px 0 0;
+	font-weight: 600;
+}
+
+.sf-fs-smtp-test__result.is-ok {
+	color: #1d6b33;
+}
+
+.sf-fs-smtp-test__result.is-fail {
+	color: #b32d2e;
+}
+
+/* Документация ---------------------------------------------------------- */
+
+.sf-fs-docs {
+	max-width: 860px;
+	padding-bottom: 10px;
+}
+
+.sf-fs-docs pre {
+	padding: 12px 14px;
+	overflow: auto;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	font: 13px/1.6 Consolas, Menlo, Monaco, monospace;
+}
+
+.sf-fs-docs h3 {
+	margin-top: 28px;
+}
+
+.sf-fs-list {
+	margin-left: 20px;
+	list-style: disc;
+}
+
+.sf-fs-docs ol.sf-fs-list {
+	list-style: decimal;
+}
+
+.sf-fs-list li {
+	margin-bottom: 6px;
+}
+
+/* Настройка колонок ----------------------------------------------------- */
+
+.sf-fs-columns {
+	margin: 14px 0;
+	padding: 10px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+}
+
+.sf-fs-columns summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.sf-fs-columns__list {
+	max-width: 720px;
+	margin: 12px 0;
+	padding: 0;
+	list-style: none;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+}
+
+.sf-fs-columns__list li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 6px 10px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.sf-fs-columns__list li:last-child {
+	border-bottom: 0;
+}
+
+.sf-fs-columns__move {
+	display: inline-flex;
+	flex-direction: column;
+	line-height: 1;
+}
+
+.sf-fs-columns__move button {
+	padding: 0;
+	color: #787c82;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.sf-fs-columns__key {
+	flex: 0 0 190px;
+	overflow: hidden;
+	color: #646970;
+	font-size: 12px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sf-fs-columns__label {
+	flex: 1 1 auto;
+}
+
+.sf-fs-columns__label--fixed {
+	color: #3c434a;
+}
+
+.sf-fs-columns__perpage {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/* Список заявок --------------------------------------------------------- */
+
+.sf-fs-list .check-column {
+	width: 32px;
+	padding: 8px 0 8px 10px;
+	vertical-align: middle;
+}
+
+.sf-fs-col--files,
+.sf-fs-col--id {
+	width: 80px;
+}
+
+.sf-fs-col--view,
+.sf-fs-col--delete {
+	width: 110px;
+}
+
+.sf-fs-del {
+	color: #b32d2e;
+}
+
+.sf-fs-danger {
+	color: #b32d2e !important;
+	border-color: #b32d2e !important;
+}
+
+.sf-fs-one th {
+	width: 240px;
+}
+
+.sf-fs-one__key {
+	display: block;
+	color: #787c82;
+	font-size: 11px;
+	font-weight: 400;
+}
+
+.sf-fs-one__delete {
+	margin-top: 20px;
+}
+
+.sf-fs-files {
+	margin: 0 0 10px;
+	padding: 0;
+	list-style: none;
+}
+
+.sf-fs-files li {
+	padding: 4px 0;
+}
+
+.sf-fs-files__size {
+	margin-left: 8px;
+	color: #787c82;
+	font-size: 12px;
+}
+
+.sf-fs-back {
+	margin-top: 10px;
+}
+
+.sf-fs-reset {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}

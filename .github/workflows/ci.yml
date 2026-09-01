@@ -1,0 +1,215 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  server:
+    name: Серверная часть (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Самая старая поддерживаемая версия и текущая.
+        php: ['7.4', '8.4']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Поставить PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          # sqlite3 нужен тестам вместо базы, exif и fileinfo — сверке
+          # содержимого файлов, gd — созданию настоящих картинок в тестах.
+          extensions: mbstring, json, gd, exif, fileinfo, pdo_sqlite, zip
+          coverage: none
+
+      - name: Разбор всех файлов плагина
+        run: |
+          set -e
+          find sf-form-sender -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Тесты серверной части
+        run: php tests/test-plugin.php
+
+      - name: Сборка архива и проверка его полноты
+        run: php build-zip.php
+
+  front:
+    name: Перехват форм в браузере
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Поставить Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Поставить Playwright и Chromium
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      # Своего пути к Chromium не задаём: тест берёт тот, который playwright
+      # поставил себе сам.
+      - name: Тесты перехвата
+        run: python tests/test-front.py
+
+  languages:
+    name: Словари собраны и полны
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Поставить Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Пересобрать каталоги и убедиться, что переводов не потеряли
+        run: |
+          set -e
+          python tools/build-languages.py | tee /tmp/languages.log
+
+          if grep -vq 'без перевода 0' /tmp/languages.log; then
+            echo "::error::Есть строки без перевода. Переведите их в languages/*.po."
+            grep -v 'без перевода 0' /tmp/languages.log || true
+            exit 1
+          fi
+
+      - name: Пересборка не должна менять файлы в репозитории
+        run: |
+          set -e
+          if ! git diff --quiet; then
+            echo "::error::Словари в репозитории разошлись с исходниками. Прогоните tools/build-languages.py и закоммитьте результат."
+            git --no-pager diff --stat
+            exit 1
+          fi
+
+  wordpress:
+    name: Дымовая проверка на настоящем WordPress
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      WP_DIR: ${{ github.workspace }}/wp
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: plugin-src
+
+      - name: Поставить PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, json, gd, exif, fileinfo, mysqli, curl, zip
+          ini-values: memory_limit=512M
+          coverage: none
+
+      - name: Поставить WP-CLI
+        run: |
+          curl -sSL -o wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x wp-cli.phar
+          sudo mv wp-cli.phar /usr/local/bin/wp
+          wp --info
+
+      - name: Поставить WordPress
+        run: |
+          set -e
+          mkdir -p "$WP_DIR"
+          cd "$WP_DIR"
+          wp core download --version=latest
+          wp config create \
+            --dbname=wordpress --dbuser=root --dbpass=root --dbhost=127.0.0.1:3306 \
+            --extra-php <<'PHP'
+          define( 'WP_DEBUG', true );
+          define( 'WP_DEBUG_LOG', true );
+          define( 'WP_DEBUG_DISPLAY', false );
+          PHP
+          wp core install \
+            --url=http://127.0.0.1:8899 --title="SF Form sender CI" \
+            --admin_user=admin --admin_password=admin123 \
+            --admin_email=ci@example.com --skip-email
+
+      - name: Собрать архив и поставить плагин из него
+        run: |
+          set -e
+          cd "${{ github.workspace }}/plugin-src"
+          php build-zip.php
+
+          cd "$WP_DIR"
+          # Ставим именно из архива: так же, как это сделает человек, и это
+          # заодно проверяет, что в архиве всё нужное.
+          wp plugin install "${{ github.workspace }}/plugin-src/sf-form-sender.zip" --activate
+          wp plugin list --status=active --field=name
+
+      - name: Дымовая проверка
+        working-directory: ${{ env.WP_DIR }}
+        run: wp eval-file "${{ github.workspace }}/plugin-src/tests/integration/smoke.php"
+
+      - name: Отключение и удаление плагина
+        working-directory: ${{ env.WP_DIR }}
+        run: |
+          set -e
+          wp plugin deactivate sf-form-sender
+          wp plugin uninstall sf-form-sender
+          # Заявки и таблицы удаление намеренно не трогает: их присылали живые
+          # люди. Проверяем, что настройки при этом убраны.
+          if wp option get sf_fs_settings > /dev/null 2>&1; then
+            echo "::error::После удаления плагина настройки остались в базе."
+            exit 1
+          fi
+          echo "настройки удалены, данные заявок сохранены"
+
+      # Валим сборку только на своих ошибках: ядро и чужие плагины могут
+      # писать в журнал предупреждения, к плагину отношения не имеющие.
+      - name: Журнал ошибок WordPress
+        if: always()
+        run: |
+          LOG="$WP_DIR/wp-content/debug.log"
+          if [ ! -s "$LOG" ]; then
+            echo "журнал ошибок пуст"
+            exit 0
+          fi
+
+          echo "--- журнал целиком ---"
+          cat "$LOG"
+
+          if grep -iE 'sf-form-sender|SF_FS' "$LOG"; then
+            echo "::error::WordPress записал ошибки, относящиеся к плагину."
+            exit 1
+          fi
+
+          echo "в журнале есть записи, но плагина они не касаются"

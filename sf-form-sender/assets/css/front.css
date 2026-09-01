@@ -1,0 +1,57 @@
+/**
+ * SF Form sender — оформление на стороне сайта.
+ *
+ * Правил намеренно мало. Оформление получают только контейнеры, которые
+ * создал сам плагин (класс sf-fs-box): если вебмастер разместил контейнеры
+ * sf_form_sender_interceptor_fail и sf_form_sender_interceptor_success сам,
+ * их внешний вид целиком за ним, плагин лишь показывает и прячет их.
+ */
+
+/*
+ * Скрытое состояние — это ровно атрибут hidden, тот же, которым пользуется
+ * вебмастер. Правило нужно на случай тем, где у div задан свой display:
+ * он перебивает штатное поведение hidden.
+ */
+.sf_form_sender_interceptor_fail[hidden],
+.sf_form_sender_interceptor_success[hidden],
+.sf_form_sender_interceptor_captcha[hidden] {
+	display: none !important;
+}
+
+.sf-fs-box {
+	margin: 0 0 14px;
+	padding: 11px 14px;
+	border-radius: 8px;
+	font-size: 15px;
+	line-height: 1.45;
+}
+
+.sf_form_sender_interceptor_fail.sf-fs-box {
+	background: #fdeceb;
+	border: 1px solid #f3c2be;
+	color: #8a1c14;
+}
+
+.sf_form_sender_interceptor_success.sf-fs-box {
+	background: #e9f6ec;
+	border: 1px solid #b9e0c3;
+	color: #16522a;
+}
+
+/*
+ * Поле-приманка. Именно уводим за край экрана, а не прячем через display:
+ * none — часть роботов пропускает поля, спрятанные очевидным способом,
+ * и ловушка перестаёт работать.
+ */
+.sf-fs-hp {
+	position: absolute !important;
+	left: -9999px !important;
+	top: auto !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
+}
+
+.sf_form_sender_interceptor_captcha:not(:empty) {
+	margin: 0 0 14px;
+}

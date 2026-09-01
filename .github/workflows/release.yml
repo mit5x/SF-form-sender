@@ -1,0 +1,169 @@
+name: Release
+
+# Два пути выпуска, оба ведут в одно место:
+#
+#   * запушить тег вида v1.2.0;
+#   * либо запустить этот workflow вручную из вкладки Actions: выбрать ветку,
+#     ввести версию — тег создастся сам.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Версия для выпуска, с ведущей v или без, например 1.2.0. Тег будет создан на выбранной выше ветке.'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Собрать и опубликовать архив
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Определить версию
+        id: version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          set -e
+
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="${INPUT_VERSION#v}"
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+            VERSION="${TAG#v}"
+          fi
+
+          if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::«$VERSION» — не номер версии вида 1.2.3."
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          # Push тега берёт тег, ручной запуск — ветку, на которой запущен;
+          # тег из неё создаётся ниже.
+          fetch-depth: 0
+
+      - name: Поставить PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, json, zip
+          coverage: none
+
+      - name: Сверить номера версий
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -e
+          header=$( grep -oP '^ \* Version:\s+\K.+' sf-form-sender/sf-form-sender.php | tr -d '[:space:]' )
+          constant=$( grep -oP "define\( 'SF_FS_VERSION', '\K[^']+" sf-form-sender/sf-form-sender.php )
+          stable=$( grep -oP '^Stable tag:\s+\K.+' sf-form-sender/readme.txt | tr -d '[:space:]' )
+
+          echo "запрошено=$VERSION заголовок=$header константа=$constant stable_tag=$stable"
+
+          for value in "$header" "$constant" "$stable"; do
+            if [ "$value" != "$VERSION" ]; then
+              echo "::error::Версии разошлись. Выпускаем $VERSION, а в плагине заголовок=$header константа=$constant stable_tag=$stable."
+              exit 1
+            fi
+          done
+
+          if ! grep -q "^= ${VERSION} =$" sf-form-sender/readme.txt; then
+            echo "::error::В readme.txt нет записи об изменениях для ${VERSION}."
+            exit 1
+          fi
+
+      - name: Создать тег
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -e
+
+          if git rev-parse "refs/tags/$TAG" > /dev/null 2>&1; then
+            echo "Тег $TAG уже есть, переиспользуем его."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "SF Form sender ${VERSION}"
+          git push origin "$TAG"
+
+      - name: Собрать архив
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -e
+          # Тем же сборщиком, что и локально: он сам проверяет полноту архива
+          # и отказывается отдавать неполный.
+          php build-zip.php
+          mv sf-form-sender.zip "SFformSender-${VERSION}.zip"
+          ls -l "SFformSender-${VERSION}.zip"
+
+      - name: Проверить архив
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -e
+          ARCHIVE="SFformSender-${VERSION}.zip"
+
+          unzip -t "$ARCHIVE" > /dev/null
+          unzip -l "$ARCHIVE"
+
+          top=$( unzip -Z1 "$ARCHIVE" | awk -F/ '{print $1}' | sort -u )
+          if [ "$top" != "sf-form-sender" ]; then
+            echo "::error::В архиве должен быть ровно один каталог верхнего уровня, sf-form-sender. Найдено: $top"
+            exit 1
+          fi
+
+          if unzip -Z1 "$ARCHIVE" | grep -E '(^|/)(tests|tools|node_modules|vendor)/|(^|/)\.[^/]+$'; then
+            echo "::error::В архив попали файлы разработки, которым там не место."
+            exit 1
+          fi
+
+          echo "sha256: $( sha256sum "$ARCHIVE" | cut -d' ' -f1 )"
+
+      - name: Опубликовать GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -e
+          ARCHIVE="SFformSender-${VERSION}.zip"
+          SHA=$( sha256sum "$ARCHIVE" | cut -d' ' -f1 )
+
+          {
+            echo "Установочный архив SF Form sender ${VERSION}."
+            echo
+            echo "Загрузите \`${ARCHIVE}\` на странице **Плагины → Добавить новый → Загрузить плагин** или поставьте через WP-CLI:"
+            echo
+            echo '```'
+            echo "wp plugin install ${ARCHIVE} --activate"
+            echo '```'
+            echo
+            echo "\`sha256: ${SHA}\`"
+            echo
+            echo "Список изменений — в \`sf-form-sender/readme.txt\`."
+          } > release-notes.md
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload "$TAG" "$ARCHIVE" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$ARCHIVE" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "SF Form sender ${VERSION}" \
+              --notes-file release-notes.md
+          fi

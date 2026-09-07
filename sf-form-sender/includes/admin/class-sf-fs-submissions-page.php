@@ -119,6 +119,13 @@ class SF_FS_Submissions_Page {
 		$rows    = SF_FS_Db::submissions( $per_page, $paged );
 		$columns = SF_FS_Columns::visible();
 
+		// Наименьшая ширина таблицы — сумма колонок с колонкой отметок.
+		// Ниже неё таблица не сжимается, а прокручивается.
+		$least = 32;
+		foreach ( $columns as $column ) {
+			$least += (int) $column['width'];
+		}
+
 		self::render_settings_panel( $per_page );
 		?>
 
@@ -142,38 +149,76 @@ class SF_FS_Submissions_Page {
 				<?php self::pagination( $paged, $pages, $total ); ?>
 			</div>
 
-			<table class="wp-list-table widefat fixed striped sf-fs-list">
-				<thead>
-					<tr>
-						<td class="check-column"><input type="checkbox" id="sf-fs-check-all"></td>
-						<?php foreach ( $columns as $column ) : ?>
-							<th scope="col" class="sf-fs-col sf-fs-col--<?php echo esc_attr( trim( $column['key'], '_' ) ); ?>">
-								<?php echo esc_html( $column['label'] ); ?>
-							</th>
-						<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-				<?php if ( ! $rows ) : ?>
-					<tr>
-						<td colspan="<?php echo esc_attr( (string) ( count( $columns ) + 1 ) ); ?>">
-							<?php esc_html_e( 'Заявок пока нет.', 'sf-form-sender' ); ?>
-						</td>
-					</tr>
-				<?php endif; ?>
+			<?php
+			/*
+			 * Колонок бывает много: поля приходят из форм, и вширь таблица
+			 * растёт быстрее экрана. Поэтому таблица прокручивается вбок
+			 * внутри своей рамки, а не растягивает страницу, и по краю, за
+			 * который прокрутка ещё не дошла, лежит затемнение — иначе
+			 * спрятанные колонки ничем себя не выдают.
+			 */
+			?>
+			<div class="sf-fs-scroll" id="sf-fs-scroll">
+				<div class="sf-fs-scroll__view">
+					<?php
+					/*
+					 * Последняя колонка — пустая и без заданной ширины: при
+					 * фиксированной раскладке весь остаток ширины достаётся
+					 * ей одной, и остальные колонки стоят ровно там, куда их
+					 * поставили мышью, а не расползаются по свободному месту.
+					 */
+					?>
+					<table class="wp-list-table widefat striped sf-fs-list" id="sf-fs-table"
+						style="min-width:<?php echo esc_attr( (string) $least ); ?>px">
+						<colgroup>
+							<col class="sf-fs-list__check">
+							<?php foreach ( $columns as $column ) : ?>
+								<col data-key="<?php echo esc_attr( $column['key'] ); ?>"
+									style="width:<?php echo esc_attr( (string) (int) $column['width'] ); ?>px">
+							<?php endforeach; ?>
+							<col class="sf-fs-list__rest">
+						</colgroup>
+						<thead>
+							<tr>
+								<td class="check-column"><input type="checkbox" id="sf-fs-check-all"></td>
+								<?php foreach ( $columns as $column ) : ?>
+									<th scope="col" class="sf-fs-col sf-fs-col--<?php echo esc_attr( trim( $column['key'], '_' ) ); ?>"
+										data-key="<?php echo esc_attr( $column['key'] ); ?>"
+										data-default-width="<?php echo esc_attr( (string) (int) $column['default_width'] ); ?>">
+										<span class="sf-fs-col__label"><?php echo esc_html( $column['label'] ); ?></span>
+										<span class="sf-fs-col__grip" data-sf-resize
+											title="<?php esc_attr_e( 'Потяните, чтобы изменить ширину колонки. Двойной щелчок вернёт ширину по умолчанию.', 'sf-form-sender' ); ?>"></span>
+									</th>
+								<?php endforeach; ?>
+								<td class="sf-fs-list__rest"></td>
+							</tr>
+						</thead>
+						<tbody>
+						<?php if ( ! $rows ) : ?>
+							<tr>
+								<td colspan="<?php echo esc_attr( (string) ( count( $columns ) + 2 ) ); ?>">
+									<?php esc_html_e( 'Заявок пока нет.', 'sf-form-sender' ); ?>
+								</td>
+							</tr>
+						<?php endif; ?>
 
-				<?php foreach ( $rows as $row ) : ?>
-					<tr>
-						<th scope="row" class="check-column">
-							<input type="checkbox" name="ids[]" value="<?php echo esc_attr( (string) $row['id'] ); ?>">
-						</th>
-						<?php foreach ( $columns as $column ) : ?>
-							<td><?php echo self::cell( $column['key'], $row ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+						<?php foreach ( $rows as $row ) : ?>
+							<tr>
+								<th scope="row" class="check-column">
+									<input type="checkbox" name="ids[]" value="<?php echo esc_attr( (string) $row['id'] ); ?>">
+								</th>
+								<?php foreach ( $columns as $column ) : ?>
+									<td><?php echo self::cell( $column['key'], $row ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+								<?php endforeach; ?>
+								<td class="sf-fs-list__rest"></td>
+							</tr>
 						<?php endforeach; ?>
-					</tr>
-				<?php endforeach; ?>
-				</tbody>
-			</table>
+						</tbody>
+					</table>
+				</div>
+				<span class="sf-fs-scroll__fade sf-fs-scroll__fade--left" aria-hidden="true"></span>
+				<span class="sf-fs-scroll__fade sf-fs-scroll__fade--right" aria-hidden="true"></span>
+			</div>
 
 			<div class="tablenav bottom">
 				<?php self::pagination( $paged, $pages, $total ); ?>

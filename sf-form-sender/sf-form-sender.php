@@ -3,7 +3,7 @@
  * Plugin Name:       SF Form sender
  * Plugin URI:        https://web-format.net
  * Description:       Универсальный перехватчик форм: принимает содержимое любой отмеченной формы, отправляет письмо (SMTP или phpmail), сохраняет заявку в базу данных, прикладывает рекламные метки из GET и защищает форму от роботов.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Saytformat
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SF_FS_VERSION', '1.0.0' );
+define( 'SF_FS_VERSION', '1.1.0' );
 define( 'SF_FS_FILE', __FILE__ );
 define( 'SF_FS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SF_FS_URL', plugin_dir_url( __FILE__ ) );

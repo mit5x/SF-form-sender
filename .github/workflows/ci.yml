@@ -50,7 +50,7 @@ jobs:
         run: php build-zip.php
 
   front:
-    name: Перехват форм в браузере
+    name: Перехват форм и таблица заявок в браузере
     runs-on: ubuntu-latest
 
     steps:
@@ -67,10 +67,21 @@ jobs:
           pip install playwright
           python -m playwright install --with-deps chromium
 
+      - name: Поставить PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, json, gd, exif, fileinfo, pdo_sqlite
+          coverage: none
+
       # Своего пути к Chromium не задаём: тест берёт тот, который playwright
       # поставил себе сам.
       - name: Тесты перехвата
         run: python tests/test-front.py
+
+      # Разметку страницы печатает сам плагин, поэтому здесь нужен и PHP.
+      - name: Таблица заявок в браузере
+        run: python tests/test-admin-table.py
 
   languages:
     name: Словари собраны и полны
@@ -89,9 +100,14 @@ jobs:
           set -e
           python tools/build-languages.py | tee /tmp/languages.log
 
-          if grep -vq 'без перевода 0' /tmp/languages.log; then
+          # Смотрим только строки про языки: «строк в каталоге: 242» под
+          # «без перевода 0» не подходит никогда, и проверка на grep -vq по
+          # всему выводу срабатывала всегда, даже когда всё переведено.
+          missing=$( grep 'без перевода' /tmp/languages.log | grep -v 'без перевода 0$' || true )
+
+          if [ -n "$missing" ]; then
             echo "::error::Есть строки без перевода. Переведите их в languages/*.po."
-            grep -v 'без перевода 0' /tmp/languages.log || true
+            echo "$missing"
             exit 1
           fi
 

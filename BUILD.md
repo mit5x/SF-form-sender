@@ -29,6 +29,7 @@ Release. Zip внутри дерева остался бы в истории git
    ```bash
    php tests/test-plugin.php
    python3 tests/test-front.py
+   python3 tests/test-admin-table.py
    php build-zip.php
    ```
 5. Выпустите — любым из двух способов:

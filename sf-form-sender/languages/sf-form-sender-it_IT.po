@@ -1,0 +1,738 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SF Form sender\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "SF Form sender"
+msgstr "SF Form sender"
+
+msgid "Заявки"
+msgstr "Richieste"
+
+msgid "Настройки SF Form sender"
+msgstr "Impostazioni di SF Form sender"
+
+msgid "Настройки"
+msgstr "Impostazioni"
+
+msgid "Сохраните поля формы, перед тем как выполнить проверку."
+msgstr "Salva i campi del modulo prima di eseguire la verifica."
+
+msgid "Идёт проверка…"
+msgstr "Verifica in corso…"
+
+msgid "Проверка не удалась: сервер не ответил."
+msgstr "La verifica non è riuscita: il server non ha risposto."
+
+msgid "Удалить все заявки без возможности восстановления?"
+msgstr "Eliminare tutte le richieste senza possibilità di recupero?"
+
+msgid "Удалить выбранные заявки?"
+msgstr "Eliminare le richieste selezionate?"
+
+msgid "Удалить заявку?"
+msgstr "Eliminare la richiesta?"
+
+msgid "Ни одна заявка не выбрана."
+msgstr "Non è selezionata nessuna richiesta."
+
+msgid "Недостаточно прав."
+msgstr "Permessi insufficienti."
+
+msgid "Язык интерфейса"
+msgstr "Lingua dell'interfaccia"
+
+msgid "Применить"
+msgstr "Applica"
+
+msgid "По умолчанию — язык сайта (%s)."
+msgstr "Per impostazione predefinita, la lingua del sito (%s)."
+
+msgid "Номер"
+msgstr "Numero"
+
+msgid "Дата и время"
+msgstr "Data e ora"
+
+msgid "IP отправителя"
+msgstr "IP del mittente"
+
+msgid "Файлов"
+msgstr "File"
+
+msgid "Посмотреть"
+msgstr "Vedi"
+
+msgid "Удалить"
+msgstr "Elimina"
+
+msgid "Страница"
+msgstr "Pagina"
+
+msgid "Форма"
+msgstr "Modulo"
+
+msgid "Настройки сохранены."
+msgstr "Impostazioni salvate."
+
+msgid "Сохранить"
+msgstr "Salva"
+
+msgid "Настройки параметров SMTP сервера, которые будут использоваться, если выбран данный способ отправки форм на e-mail."
+msgstr "Impostazioni del server SMTP usate se è scelto questo modo di inviare per e-mail il contenuto dei moduli."
+
+msgid "ВАЖНО!"
+msgstr "IMPORTANTE!"
+
+msgid "Заполняйте значения только в том случае, если вы твёрдо знаете, что это такое, и уверены, что вам это действительно нужно. В иных случаях оставьте данные поля пустыми."
+msgstr "Compila questi valori solo se sai con certezza di cosa si tratta e sei sicuro che ti servano davvero. Altrimenti lascia i campi vuoti."
+
+msgid "Четыре независимые преграды: капча, ловушка на слишком быструю отправку и скрытое поле-приманка. Первые две видит посетитель, остальные — только робот."
+msgstr "Quattro barriere indipendenti: il captcha, la trappola per gli invii troppo rapidi e il campo esca nascosto. La prima la vede il visitatore, le altre solo un robot."
+
+msgid "Да"
+msgstr "Sì"
+
+msgid "Показать"
+msgstr "Mostra"
+
+msgid "Тексты, которые видит посетитель сайта. При установке плагина они записываются на языке сайта и дальше живут отдельно от языка интерфейса: переключение языка админки эти тексты не меняет."
+msgstr "I testi che vede il visitatore del sito. All'installazione del plugin vengono salvati nella lingua del sito e poi vivono separatamente dalla lingua dell'interfaccia: cambiare la lingua dell'amministrazione non li modifica."
+
+msgid "Заменить все тексты значениями по умолчанию на языке"
+msgstr "Sostituisci tutti i testi con i valori predefiniti nella lingua"
+
+msgid "— не менять —"
+msgstr "— non cambiare —"
+
+msgid "Все тексты уведомлений будут заменены. Продолжить?"
+msgstr "Tutti i testi delle notifiche verranno sostituiti. Continuare?"
+
+msgid "Заменить"
+msgstr "Sostituisci"
+
+msgid "Проверка SMTP сервера"
+msgstr "Verifica del server SMTP"
+
+msgid "Плагин соединится с сервером, поздоровается и попробует авторизоваться, показывая весь обмен строками. Письмо при этом не отправляется."
+msgstr "Il plugin si collega al server, lo saluta e prova ad autenticarsi mostrando l'intero scambio riga per riga. Nessun messaggio viene inviato."
+
+msgid "Проверить"
+msgstr "Verifica"
+
+msgid "Не заполнено поле SMTP Host."
+msgstr "Il campo SMTP Host è vuoto."
+
+msgid "Соединение с"
+msgstr "Connessione a"
+
+msgid "Не удалось установить соединение с сервером."
+msgstr "Non è stato possibile stabilire la connessione con il server."
+
+msgid "Сервер не принял приветствие EHLO."
+msgstr "Il server non ha accettato il saluto EHLO."
+
+msgid "Сервер не согласился включить шифрование STARTTLS."
+msgstr "Il server non ha accettato di attivare la cifratura STARTTLS."
+
+msgid "Авторизация отклонена."
+msgstr "Autenticazione respinta."
+
+msgid "Имя пользователя не задано — авторизация пропущена."
+msgstr "Nome utente non indicato: autenticazione saltata."
+
+msgid "Проверка пройдена: сервер отвечает и принимает эти данные."
+msgstr "Verifica superata: il server risponde e accetta questi dati."
+
+msgid "Удалена %d заявка."
+msgid_plural "Удалено заявок: %d."
+msgstr[0] "Eliminata %d richiesta."
+msgstr[1] "Eliminate %d richieste."
+
+msgid "Настройки таблицы сохранены."
+msgstr "Impostazioni della tabella salvate."
+
+msgid "Сохранение заявок в базу данных выключено — новые заявки в этот список не попадут."
+msgstr "Il salvataggio delle richieste nel database è disattivato: le nuove richieste non compariranno in questo elenco."
+
+msgid "Включить в настройках"
+msgstr "Attivalo nelle impostazioni"
+
+msgid "Удалить выбранные"
+msgstr "Elimina le selezionate"
+
+msgid "Удалить все"
+msgstr "Elimina tutte"
+
+msgid "Потяните, чтобы изменить ширину колонки. Двойной щелчок вернёт ширину по умолчанию."
+msgstr "Trascina per cambiare la larghezza della colonna. Un doppio clic ripristina la larghezza predefinita."
+
+msgid "Заявок пока нет."
+msgstr "Non ci sono ancora richieste."
+
+msgid "%s заявка"
+msgid_plural "Заявок: %s"
+msgstr[0] "%s richiesta"
+msgstr[1] "%s richieste"
+
+msgid "Настроить колонки таблицы"
+msgstr "Configura le colonne della tabella"
+
+msgid "Имена полей приходят из форм, поэтому названия колонок задаются здесь. Постоянные колонки убрать нельзя, но переставить можно вместе с остальными."
+msgstr "I nomi dei campi arrivano dai moduli, perciò i titoli delle colonne si impostano qui. Le colonne fisse non si possono togliere, ma si possono riordinare insieme alle altre."
+
+msgid "Выше"
+msgstr "Su"
+
+msgid "Ниже"
+msgstr "Giù"
+
+msgid "Строк на странице"
+msgstr "Righe per pagina"
+
+msgid "Заявка не найдена — возможно, её уже удалили."
+msgstr "Richiesta non trovata: forse è già stata eliminata."
+
+msgid "К списку заявок"
+msgstr "Torna all'elenco"
+
+msgid "Заявка №%d"
+msgstr "Richiesta n. %d"
+
+msgid "Прикреплённые файлы"
+msgstr "File allegati"
+
+msgid "Удалить заявку"
+msgstr "Elimina la richiesta"
+
+msgid "калькулятор"
+msgstr "calcolatore"
+
+msgid "Как настроить перехват содержимого форм"
+msgstr "Come intercettare il contenuto dei moduli"
+
+msgid "Достаточно одного атрибута в теге формы: %1$s, а если хотите задать форме своё имя — %2$s."
+msgstr "Basta un attributo nel tag del modulo: %1$s, oppure %2$s se vuoi dare al modulo un nome tuo."
+
+msgid "Всё остальное — контейнеры уведомлений, капча, поле-приманка, служебные поля — плагин добавит сам, если их нет."
+msgstr "Tutto il resto — i contenitori delle notifiche, il captcha, il campo esca, i campi di servizio — lo aggiunge il plugin se manca."
+
+msgid "Отправить"
+msgstr "Invia"
+
+msgid "Атрибут %1$s придуман нами, в стандарте HTML такого нет: сервисы проверки разметки вроде validator.w3.org сочтут его ошибкой. Если такие проверки для вас важны, напишите вместо него %2$s — это обычный data-атрибут, к нему у стандарта претензий не будет. Плагин понимает оба написания, в работе они ничем не отличаются."
+msgstr "L'attributo %1$s ce lo siamo inventati noi, nello standard HTML non esiste nulla del genere: i servizi di controllo del markup come validator.w3.org lo segnaleranno come errore. Se quei controlli ti interessano, scrivi invece %2$s: è un normale attributo data, a cui lo standard non ha nulla da obiettare. Il plugin riconosce entrambe le scritture, e funzionano esattamente allo stesso modo."
+
+msgid "Контейнеры уведомлений"
+msgstr "Contenitori delle notifiche"
+
+msgid "Два контейнера можно разместить в удобных местах формы. По умолчанию плагин делает их невидимыми, а при необходимости показывает текст ошибки или уведомление об успешной отправке."
+msgstr "I due contenitori si possono collocare dove preferisci dentro il modulo. Il plugin li tiene invisibili e, quando serve, li mostra con il testo dell'errore o con la notifica di invio riuscito."
+
+msgid "Оформление этих контейнеров задаёт вебмастер своим CSS: собственные стили плагин к ним не применяет. Если контейнеров в форме нет, плагин создаст их сам над кнопкой отправки и оформит по-своему."
+msgstr "L'aspetto di questi contenitori lo decide il webmaster con il proprio CSS: il plugin non applica loro stili propri. Se nel modulo non ci sono, il plugin li crea sopra il pulsante di invio e li imposta a modo suo."
+
+msgid "Контейнер капчи"
+msgstr "Contenitore del captcha"
+
+msgid "Работает так же: есть в форме — капча появится там, нет — плагин добавит контейнер над кнопкой отправки. Ключи капчи задаются на вкладке «Антиспам»."
+msgstr "Funziona allo stesso modo: se è nel modulo, il captcha compare lì, altrimenti il plugin aggiunge il contenitore sopra il pulsante di invio. Le chiavi del captcha si indicano nella scheda «Antispam»."
+
+msgid "Несколько форм на одной странице"
+msgstr "Più moduli in una stessa pagina"
+
+msgid "Всем формам ставится один и тот же атрибут — различать их вебмастеру не нужно. Плагин сам нумерует формы в порядке появления на странице: form-1, form-2 и так далее, и номер попадает в заявку."
+msgstr "Tutti i moduli ricevono lo stesso attributo: il webmaster non deve distinguerli. Il plugin numera i moduli da sé, nell'ordine in cui compaiono nella pagina: form-1, form-2 e così via, e il numero finisce nella richiesta."
+
+msgid "Если понятное имя всё же нужно, его можно написать значением атрибута — тогда в заявке будет оно:"
+msgstr "Se serve comunque un nome leggibile, scrivilo come valore dell'attributo: sarà quello a comparire nella richiesta:"
+
+msgid "Обязательные поля и проверка"
+msgstr "Campi obbligatori e controllo"
+
+msgid "Проверку заполнения плагин не трогает вовсе. Незаполненное поле с атрибутом required браузер обрабатывает сам: переводит в него курсор и показывает свою подсказку, а до плагина дело даже не доходит. Так же он поступает с типами email, url, tel и с атрибутом pattern."
+msgstr "Il plugin non tocca affatto il controllo delle voci. Un campo vuoto con l'attributo required lo gestisce il browser stesso: porta il cursore nel campo e mostra il proprio suggerimento, e al plugin non arriva nemmeno il turno. Allo stesso modo si comporta con i tipi email, url, tel e con l'attributo pattern."
+
+msgid "Если вебмастер поставил форме novalidate и проверяет её собственным скриптом, плагин не мешает и ему: своя проверка вешается на отменяемое событие ниже и точно так же отменяет отправку."
+msgstr "Se il webmaster ha messo novalidate sul modulo e lo controlla con un proprio script, il plugin non intralcia nemmeno lì: quel controllo si aggancia all'evento annullabile qui sotto e annulla l'invio allo stesso modo."
+
+msgid "Собственные уведомления плагин показывает только про то, что задано в его настройках: капча, разрешённые типы и размер файлов, ловушки антиспама, сбой почты или базы данных. Их тексты — на вкладке «Уведомления»."
+msgstr "Il plugin mostra notifiche proprie solo su ciò che rientra nelle sue impostazioni: il captcha, i tipi e la dimensione dei file ammessi, le trappole antispam, un guasto della posta o del database. I loro testi sono nella scheda «Notifiche»."
+
+msgid "Зарезервированные имена полей"
+msgstr "Nomi di campo riservati"
+
+msgid "В каждой заявке плагин сам сохраняет ip отправителя, полный адрес страницы и время отправки. Если в форме есть поля с такими именами, значения из формы важнее:"
+msgstr "Con ogni richiesta il plugin salva da sé l'IP del mittente, l'indirizzo completo della pagina e l'ora dell'invio. Se nel modulo ci sono campi con questi nomi, prevalgono i valori del modulo:"
+
+msgid "ip отправителя"
+msgstr "IP del mittente"
+
+msgid "адрес страницы"
+msgstr "indirizzo della pagina"
+
+msgid "дата и время отправки"
+msgstr "data e ora dell'invio"
+
+msgid "Приставку %1$s получают все сохранённые GET параметры без исключения: и весь набор utm-меток (utm_source, utm_medium, utm_campaign, utm_content, utm_term), и метки рекламных систем вроде yclid или gclid, и любые ваши собственные. Например, %2$s превращается в %3$s. Приставка нужна, чтобы метка не смешалась с полем формы, названным так же."
+msgstr "Il prefisso %1$s lo ricevono tutti i parametri GET salvati senza eccezione: l'intera serie di etichette utm (utm_source, utm_medium, utm_campaign, utm_content, utm_term), le etichette dei circuiti pubblicitari come yclid o gclid e qualunque etichetta tua. Per esempio, %2$s diventa %3$s. Il prefisso serve perché l'etichetta non si mescoli con un campo del modulo dallo stesso nome."
+
+msgid "Файлы"
+msgstr "File"
+
+msgid "Поля выбора файлов работают без настройки — достаточно обычного input с типом file. Множественный выбор тоже поддерживается:"
+msgstr "I campi di scelta file funzionano senza configurazione: basta un normale input di tipo file. È supportata anche la selezione multipla:"
+
+msgid "Файлы уходят вложением в письмо всегда, а на сервере остаются, только если включена соответствующая настройка на вкладке «Основное»."
+msgstr "I file partono sempre come allegato del messaggio, e restano sul server solo se è attiva la relativa impostazione nella scheda «Generale»."
+
+msgid "Кроме расширения плагин сверяет и содержимое файла. Если внутри оказался другой разрешённый формат — так бывает, когда картинку пересохранили, не переименовав файл, — плагин молча примет её под верным расширением. Откажет он только тогда, когда содержимое не удалось опознать вовсе."
+msgstr "Oltre all'estensione, il plugin controlla anche che cosa c'è dentro il file. Se il contenuto risulta essere un altro formato ammesso — succede quando un'immagine viene risalvata senza rinominare il file — il plugin lo accetta senza dire nulla, con l'estensione giusta. Rifiuta soltanto quando il contenuto non si riesce a riconoscere affatto."
+
+msgid "Имя файла сохраняется таким, каким его прислал посетитель: кириллица, пробелы и скобки остаются на месте. Убирается только то, что ломает путь или файловую систему. Перевести имена в латиницу можно переключателем «Транслитерировать названия файлов?» — и это единственное, что на них влияет: плагины перевода имён для медиатеки вложениям из форм не указ."
+msgstr "Il nome del file resta esattamente come l'ha mandato il visitatore: lettere cirilliche, spazi e parentesi rimangono al loro posto. Viene tolto solo ciò che romperebbe il percorso o il file system. Per portare i nomi in alfabeto latino c'è l'interruttore «Traslitterare i nomi dei file?», ed è l'unica cosa che agisce su di essi: i plugin che rinominano i caricamenti della libreria media non hanno voce in capitolo sugli allegati dei moduli."
+
+msgid "Как вмешаться в отправку из темы"
+msgstr "Come intervenire sull'invio dal tema"
+
+msgid "На элементе формы плагин вызывает три события. Первое отменяемое: это место для собственных проверок темы."
+msgstr "Sull'elemento del modulo il plugin lancia tre eventi. Il primo è annullabile: è il posto giusto per i controlli propri del tema."
+
+msgid "отменит отправку"
+msgstr "annulla l'invio"
+
+msgid "На стороне PHP есть фильтр и действие:"
+msgstr "Dal lato PHP ci sono un filtro e un'azione:"
+
+msgid "изменить данные заявки или отменить её, вернув WP_Error"
+msgstr "modificare i dati della richiesta o annullarla restituendo WP_Error"
+
+msgid "заявка обработана"
+msgstr "la richiesta è stata elaborata"
+
+msgid "Что стоит знать заранее"
+msgstr "Da sapere in anticipo"
+
+msgid "Формы отправляются без перезагрузки страницы. Если JavaScript у посетителя выключен, форма уйдёт обычной отправкой браузера и плагин её не увидит."
+msgstr "I moduli vengono inviati senza ricaricare la pagina. Se il visitatore ha JavaScript disattivato, il modulo partirà con il normale invio del browser e il plugin non lo vedrà."
+
+msgid "Ключ формы живёт сутки. При кешировании страниц дольше суток посетитель получит уведомление «Страница была открыта слишком давно» — держите время жизни кеша меньше."
+msgstr "La chiave del modulo vive un giorno. Se le pagine restano in cache più a lungo, il visitatore riceverà la notifica «La pagina è aperta da troppo tempo»: tieni la durata della cache più breve."
+
+msgid "Запрет на выполнение файлов в каталоге загрузок плагин ставит через .htaccess. На nginx этот файл не читается — закройте выполнение PHP в /uploads/ настройками сервера."
+msgstr "Il divieto di eseguire file nella cartella dei caricamenti il plugin lo imposta con .htaccess. Nginx non legge quel file: blocca l'esecuzione di PHP in /uploads/ dalla configurazione del server."
+
+msgid "Ловушка на время и поле-приманка отсекают простых роботов и ничего не показывают посетителю. Настоящую защиту от целенаправленного спама даёт только капча."
+msgstr "La trappola sul tempo e il campo esca fermano i robot semplici e non mostrano nulla al visitatore. Una protezione reale dallo spam mirato la dà solo il captcha."
+
+msgid "Проверка после установки"
+msgstr "Controlli dopo l'installazione"
+
+msgid "Отправьте форму с заполненными полями — должно появиться уведомление об успехе, а заявка — в разделе «Заявки»."
+msgstr "Invia il modulo con i campi compilati: deve comparire la notifica di successo e la richiesta nella sezione «Richieste»."
+
+msgid "Отправьте форму сразу после загрузки страницы: если время в настройках больше нуля, уведомление будет успешным, но заявка не появится — это ловушка на роботов."
+msgstr "Invia il modulo subito dopo il caricamento della pagina: se il tempo nelle impostazioni è maggiore di zero, la notifica sarà di successo ma la richiesta non comparirà — è la trappola per i robot."
+
+msgid "Зайдите на сайт по адресу с ?utm_source=test и отправьте форму — метка должна оказаться в письме и в заявке."
+msgstr "Apri il sito con un indirizzo che contenga ?utm_source=test e invia il modulo: l'etichetta deve finire nel messaggio e nella richiesta."
+
+msgid "Проверьте SMTP кнопкой на соответствующей вкладке, если выбран этот способ отправки."
+msgstr "Verifica l'SMTP con il pulsante nella scheda corrispondente, se è questo il modo di invio scelto."
+
+msgid "Заявка с сайта: {site}"
+msgstr "Richiesta dal sito {site}"
+
+msgid "Сохранённые GET параметры"
+msgstr "Parametri GET salvati"
+
+msgid "Успешная отправка"
+msgstr "Invio riuscito"
+
+msgid "Спасибо! Ваше сообщение отправлено, мы свяжемся с вами в ближайшее время."
+msgstr "Grazie! Il tuo messaggio è stato inviato, ti contatteremo al più presto."
+
+msgid "Показывается в контейнере успеха после того, как заявка принята."
+msgstr "Compare nel contenitore del successo una volta accettata la richiesta."
+
+msgid "Общая ошибка отправки"
+msgstr "Errore generico di invio"
+
+msgid "Не удалось отправить сообщение. Попробуйте ещё раз или свяжитесь с нами другим способом."
+msgstr "Non è stato possibile inviare il messaggio. Riprova o contattaci in un altro modo."
+
+msgid "Запасной текст: показывается, когда причину назвать нельзя или для неё нет отдельного уведомления."
+msgstr "Testo di riserva: compare quando la causa non si può indicare o non ha una notifica propria."
+
+msgid "Пустая форма"
+msgstr "Modulo vuoto"
+
+msgid "Форма пустая: заполните хотя бы одно поле."
+msgstr "Il modulo è vuoto: compila almeno un campo."
+
+msgid "Защита от случайной отправки формы, в которой нет ни одного заполненного поля."
+msgstr "Protezione dall'invio accidentale di un modulo in cui non è compilato nemmeno un campo."
+
+msgid "Устаревшая страница"
+msgstr "Pagina scaduta"
+
+msgid "Страница была открыта слишком давно. Обновите её и отправьте форму заново."
+msgstr "La pagina è aperta da troppo tempo. Aggiornala e invia di nuovo il modulo."
+
+msgid "Проверочный ключ формы живёт сутки. Обычно это значит, что вкладку не закрывали больше суток."
+msgstr "La chiave di controllo del modulo vive un giorno. Di solito significa che la scheda è rimasta aperta per più di un giorno."
+
+msgid "Капча не пройдена"
+msgstr "Captcha non superato"
+
+msgid "Подтвердите, что вы не робот."
+msgstr "Conferma di non essere un robot."
+
+msgid "Посетитель не отметил капчу или её проверка на сервере не удалась."
+msgstr "Il visitatore non ha spuntato il captcha, oppure la sua verifica sul server non è riuscita."
+
+msgid "Запрещённый тип файла"
+msgstr "Tipo di file vietato"
+
+msgid "Файл «{file}» нельзя загрузить. Разрешены: {allowed}."
+msgstr "Il file «{file}» non può essere caricato. Sono ammessi: {allowed}."
+
+msgid "Подстановки: {file} — имя файла, {allowed} — список разрешённых расширений."
+msgstr "Sostituzioni: {file} — nome del file, {allowed} — elenco delle estensioni ammesse."
+
+msgid "Содержимое файла не совпадает с расширением"
+msgstr "Il contenuto del file non corrisponde all'estensione"
+
+msgid "Не удалось разобрать содержимое файла «{file}». Проверьте, что это действительно {ext}, и попробуйте ещё раз."
+msgstr "Non è stato possibile leggere il contenuto del file «{file}». Controlla che sia davvero un {ext} e riprova."
+
+msgid "Расширение разрешено, но внутри файла оказалось не то, что обещает имя: файл повреждён или сохранён в формате, о котором сервер не знает. Если формат просто другой и он тоже разрешён, плагин молча примет файл под верным именем и этого уведомления не покажет. Подстановки: {file} — имя файла, {ext} — расширение."
+msgstr "L'estensione è ammessa, ma dentro il file c'è qualcosa di diverso da ciò che promette il nome: è danneggiato oppure salvato in un formato che il server non conosce. Se il formato è semplicemente un altro fra quelli ammessi, il plugin accetta il file senza dire nulla con il nome giusto e questa notifica non compare. Sostituzioni: {file} — nome del file, {ext} — estensione."
+
+msgid "Файлы слишком большие"
+msgstr "File troppo grandi"
+
+msgid "Общий размер файлов больше допустимых {limit} МБ."
+msgstr "La dimensione complessiva dei file supera i {limit} MB consentiti."
+
+msgid "Подстановка: {limit} — ограничение из настроек."
+msgstr "Sostituzione: {limit} — il limite impostato nelle impostazioni."
+
+msgid "Файл не загрузился"
+msgstr "Il file non è stato caricato"
+
+msgid "Не удалось загрузить файл «{file}». Попробуйте ещё раз."
+msgstr "Non è stato possibile caricare il file «{file}». Riprova."
+
+msgid "Сбой при передаче файла на сервер. Подстановка: {file}."
+msgstr "Un problema durante il trasferimento del file al server. Sostituzione: {file}."
+
+msgid "Письмо не отправлено"
+msgstr "Il messaggio non è stato inviato"
+
+msgid "Не удалось отправить письмо. Мы уже знаем о сбое, но лучше свяжитесь с нами другим способом."
+msgstr "Non è stato possibile inviare il messaggio. Sappiamo già del problema, ma è meglio se ci contatti in un altro modo."
+
+msgid "Почтовый сервер отказал. Если сохранение заявок включено, заявка при этом уже в базе."
+msgstr "Il server di posta ha rifiutato. Se il salvataggio delle richieste è attivo, la richiesta è comunque già nel database."
+
+msgid "Заявка не сохранена"
+msgstr "La richiesta non è stata salvata"
+
+msgid "Не удалось сохранить заявку. Попробуйте позже."
+msgstr "Non è stato possibile salvare la richiesta. Riprova più tardi."
+
+msgid "Ошибка базы данных. Видна, только если письмо тоже не ушло."
+msgstr "Un errore del database. Si vede solo se nemmeno il messaggio è partito."
+
+msgid "Сервер не ответил"
+msgstr "Il server non ha risposto"
+
+msgid "Сервер не ответил. Проверьте соединение и попробуйте ещё раз."
+msgstr "Il server non ha risposto. Controlla la connessione e riprova."
+
+msgid "Показывается браузером, когда запрос не дошёл до сайта."
+msgstr "Lo mostra il browser quando la richiesta non ha raggiunto il sito."
+
+msgid "Отправка идёт"
+msgstr "Invio in corso"
+
+msgid "Отправляем…"
+msgstr "Invio…"
+
+msgid "Подпись на кнопке, пока заявка уходит на сервер. Оставьте поле пустым, чтобы подпись кнопки не менялась."
+msgstr "La scritta sul pulsante mentre la richiesta viaggia verso il server. Lascia il campo vuoto perché la scritta non cambi."
+
+msgid "Основное"
+msgstr "Generale"
+
+msgid "Антиспам"
+msgstr "Antispam"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "Phpmail"
+msgstr "Phpmail"
+
+msgid "Уведомления"
+msgstr "Notifiche"
+
+msgid "Документация"
+msgstr "Documentazione"
+
+msgid "Как отправлять содержимое форм на e-mail?"
+msgstr "Come inviare per e-mail il contenuto dei moduli?"
+
+msgid "phpmail — штатная почта сервера, ничего настраивать не нужно. SMTP — отправка через почтовый сервер с авторизацией, письма реже попадают в спам. «Не отправлять» — заявки только сохраняются в базу данных."
+msgstr "phpmail è la posta ordinaria del server, non c'è nulla da configurare. SMTP è l'invio tramite un server di posta con autenticazione, così i messaggi finiscono meno spesso nello spam. «Non inviare» significa che le richieste vengono solo salvate nel database."
+
+msgid "Не отправлять"
+msgstr "Non inviare"
+
+msgid "phpmail"
+msgstr "phpmail"
+
+msgid "Кому отправлять письма"
+msgstr "A chi inviare i messaggi"
+
+msgid "Один или несколько адресов через запятую. Если поле пустое, письма уходят на адрес администратора сайта из «Настройки → Общие»."
+msgstr "Uno o più indirizzi separati da virgole. Se il campo è vuoto, i messaggi vanno all'indirizzo dell'amministratore del sito indicato in «Impostazioni → Generali»."
+
+msgid "Тема письма"
+msgstr "Oggetto del messaggio"
+
+msgid "Допустимые подстановки: {site} — название сайта, {page} — заголовок страницы, {form} — номер или имя формы."
+msgstr "Sostituzioni ammesse: {site} — nome del sito, {page} — titolo della pagina, {form} — numero o nome del modulo."
+
+msgid "Записывать содержимое входящих GET параметров?"
+msgstr "Registrare il contenuto dei parametri GET in arrivo?"
+
+msgid "Метки рекламных систем (utm_source и любые другие) из адреса страницы сохраняются в cookie посетителя бессрочно. Новые значения дописываются к уже сохранённым, а не заменяют их."
+msgstr "Le etichette dei sistemi pubblicitari (utm_source e qualsiasi altra) presenti nell'indirizzo della pagina vengono conservate senza scadenza nel cookie del visitatore. I nuovi valori si aggiungono a quelli già salvati invece di sostituirli."
+
+msgid "Прикреплять содержимое сохранённых GET параметров к отправляемому письму?"
+msgstr "Allegare al messaggio il contenuto dei parametri GET salvati?"
+
+msgid "В конце письма появится отдельный блок вида «имя_параметра: значение1, значение2». По нему сразу видно, что заявку оставил посетитель с рекламы, а не спам-робот."
+msgstr "In fondo al messaggio comparirà un blocco a parte nella forma «nome_parametro: valore1, valore2». Da lì si vede subito che la richiesta l'ha lasciata un visitatore arrivato dalla pubblicità e non un robot di spam."
+
+msgid "Сохранять отправленные заявки в базу данных сайта?"
+msgstr "Salvare le richieste inviate nel database del sito?"
+
+msgid "Заявки складываются в собственные таблицы плагина и доступны в разделе «Заявки». Письмо может не дойти, а запись в базе останется."
+msgstr "Le richieste vengono riposte in tabelle proprie del plugin e restano disponibili nella sezione «Richieste». Un messaggio può non arrivare, ma il record nel database rimane."
+
+msgid "Сохранять записанные GET параметры в базу данных сайта?"
+msgstr "Salvare i parametri GET registrati nel database del sito?"
+
+msgid "Параметр с несколькими значениями сохраняется одной строкой через запятую."
+msgstr "Un parametro con più valori viene salvato in una sola riga, separando i valori con virgole."
+
+msgid "Файлы, прикреплённые к формам"
+msgstr "File allegati ai moduli"
+
+msgid "Сохранять прикреплённые к формам файлы на сервер?"
+msgstr "Salvare sul server i file allegati ai moduli?"
+
+msgid "Файлы кладутся в /uploads/sf-form-sender/номер-заявки/. Если выключено, файлы всё равно уходят вложением в письмо, но на сервере не остаются."
+msgstr "I file vengono messi in /uploads/sf-form-sender/numero-della-richiesta/. Se è disattivato, i file partono comunque come allegato ma non restano sul server."
+
+msgid "Разрешённые расширения файлов, через запятую"
+msgstr "Estensioni di file ammesse, separate da virgole"
+
+msgid "Проверка на стороне плагина. Исполняемые файлы (php, phtml, cgi, exe и подобные) плагин не примет, даже если добавить их в этот список. Кроме расширения сверяется и содержимое файла: если оно другого разрешённого типа, файл примется под верным именем, а неопознанное содержимое не пройдёт."
+msgstr "Il controllo dal lato del plugin. I file eseguibili (php, phtml, cgi, exe e simili) non vengono mai accettati, anche se li aggiungi a questo elenco. Oltre all'estensione viene controllato anche il contenuto: se è di un altro tipo ammesso, il file viene accettato con il nome giusto, mentre un contenuto non riconosciuto non passa."
+
+msgid "Максимальный размер всех отправляемых файлов (Мегабайт)"
+msgstr "Dimensione massima di tutti i file inviati (megabyte)"
+
+msgid "Считается сумма всех файлов одной заявки. Сервер может ограничивать загрузку жёстче — смотрите upload_max_filesize и post_max_size."
+msgstr "Viene contata la somma di tutti i file di una stessa richiesta. Il server può limitare i caricamenti più severamente: guarda upload_max_filesize e post_max_size."
+
+msgid "Транслитерировать названия файлов?"
+msgstr "Traslitterare i nomi dei file?"
+
+msgid "Имя «Договор.pdf» станет «dogovor.pdf». Полезно, если файлы потом скачиваются по прямой ссылке."
+msgstr "Il nome «Договор.pdf» diventa «dogovor.pdf». Utile se i file vengono poi scaricati tramite link diretto."
+
+msgid "Yandex SmartCaptcha"
+msgstr "Yandex SmartCaptcha"
+
+msgid "Использовать Yandex SmartCaptcha в формах?"
+msgstr "Usare Yandex SmartCaptcha nei moduli?"
+
+msgid "Капча выводится в контейнере sf_form_sender_interceptor_captcha. Если вебмастер такой контейнер не сделал, плагин добавит его сам над кнопкой отправки."
+msgstr "Il captcha compare nel contenitore sf_form_sender_interceptor_captcha. Se il webmaster non ha predisposto quel contenitore, il plugin lo aggiunge sopra il pulsante di invio."
+
+msgid "Клиентский ключ Yandex SmartCaptcha"
+msgstr "Chiave client di Yandex SmartCaptcha"
+
+msgid "Ключ сайта из консоли Yandex Cloud. Виден в исходном коде страницы — это нормально."
+msgstr "La chiave del sito dalla console di Yandex Cloud. È visibile nel codice sorgente della pagina, ed è normale."
+
+msgid "Серверный ключ Yandex SmartCaptcha"
+msgstr "Chiave server di Yandex SmartCaptcha"
+
+msgid "Секретный ключ той же капчи. Нужен для проверки ответа на сервере, никому не показывайте."
+msgstr "La chiave segreta dello stesso captcha. Serve per verificare la risposta sul server, non mostrarla a nessuno."
+
+msgid "Google reCAPTCHA"
+msgstr "Google reCAPTCHA"
+
+msgid "Использовать Google reCAPTCHA в формах?"
+msgstr "Usare Google reCAPTCHA nei moduli?"
+
+msgid "Одновременно можно включить только одну капчу. При включении этой Yandex SmartCaptcha будет выключена."
+msgstr "Può essere attivo un solo captcha alla volta. Attivando questo, Yandex SmartCaptcha verrà disattivato."
+
+msgid "Версия reCAPTCHA"
+msgstr "Versione di reCAPTCHA"
+
+msgid "v2 — знакомая галочка «Я не робот». v3 — незаметная проверка, которая выдаёт оценку от 0 до 1 и ничего не показывает посетителю."
+msgstr "v2 è la nota casella «Non sono un robot». v3 è un controllo invisibile che restituisce un punteggio da 0 a 1 e non mostra nulla al visitatore."
+
+msgid "v2 — галочка «Я не робот»"
+msgstr "v2 — casella «Non sono un robot»"
+
+msgid "v3 — незаметная, по оценке"
+msgstr "v3 — invisibile, a punteggio"
+
+msgid "Ключ сайта reCAPTCHA"
+msgstr "Chiave del sito reCAPTCHA"
+
+msgid "Site key из консоли Google reCAPTCHA."
+msgstr "La site key dalla console di Google reCAPTCHA."
+
+msgid "Секретный ключ reCAPTCHA"
+msgstr "Chiave segreta reCAPTCHA"
+
+msgid "Secret key той же пары ключей. Используется только на сервере."
+msgstr "La secret key della stessa coppia di chiavi. Viene usata solo sul server."
+
+msgid "Минимальная оценка для reCAPTCHA v3"
+msgstr "Punteggio minimo per reCAPTCHA v3"
+
+msgid "Заявки с оценкой ниже указанной считаются роботом. 0.5 — рекомендация Google, повышайте осторожно."
+msgstr "Le richieste con un punteggio inferiore a quello indicato vengono considerate robot. 0.5 è la raccomandazione di Google, alzalo con prudenza."
+
+msgid "Простые ловушки"
+msgstr "Trappole semplici"
+
+msgid "Время в секундах, больше которого пользователя не считать ботом"
+msgstr "Tempo in secondi oltre il quale l'utente non viene considerato un bot"
+
+msgid "Если пользователь провёл на сайте меньше указанного числа секунд, содержимое формы не будет отправлено, но визуально отобразится как будто отправка состоялась. 0 — проверка выключена."
+msgstr "Se l'utente ha passato sul sito meno secondi di quelli indicati, il contenuto del modulo non verrà inviato, ma visivamente sembrerà che l'invio sia avvenuto. 0 disattiva il controllo."
+
+msgid "Добавить пустое скрытое поле приманку?"
+msgstr "Aggiungere un campo esca nascosto e vuoto?"
+
+msgid "Скрытое input поле с именем website (имя можно поменять ниже). Для обычных пользователей поле скрыто, а роботы его видят. Если поле оказывается не пустым, содержимое формы не будет отправлено, но визуально отобразится как будто отправка состоялась."
+msgstr "Un campo input nascosto di nome website (il nome si può cambiare qui sotto). Per gli utenti comuni il campo è invisibile, i robot lo vedono. Se il campo non risulta vuoto, il contenuto del modulo non verrà inviato, ma visivamente sembrerà che l'invio sia avvenuto."
+
+msgid "Имя поля приманки"
+msgstr "Nome del campo esca"
+
+msgid "Роботы охотнее заполняют поля с узнаваемыми именами: website, url, company."
+msgstr "I robot compilano più volentieri i campi dai nomi riconoscibili: website, url, company."
+
+msgid "SMTP Host"
+msgstr "SMTP Host"
+
+msgid "Адрес почтового сервера, например smtp.yandex.ru."
+msgstr "L'indirizzo del server di posta, ad esempio smtp.yandex.ru."
+
+msgid "SMTP Port"
+msgstr "SMTP Port"
+
+msgid "Обычно 465 для SSL и 587 для TLS."
+msgstr "Di solito 465 per SSL e 587 per TLS."
+
+msgid "SMTP Username"
+msgstr "SMTP Username"
+
+msgid "Чаще всего совпадает с почтовым ящиком, от имени которого уходят письма."
+msgstr "Nella maggior parte dei casi coincide con la casella da cui partono i messaggi."
+
+msgid "SMTP Password"
+msgstr "SMTP Password"
+
+msgid "Пароль хранится в таблице настроек WordPress в открытом виде — так устроены все плагины отправки почты. Заводите отдельный пароль приложения, если почтовая служба это умеет."
+msgstr "La password è conservata in chiaro nella tabella delle impostazioni di WordPress: funzionano così tutti i plugin di invio. Crea una password per applicazioni dedicata, se il tuo servizio di posta lo consente."
+
+msgid "Предельное время ожидания ответа SMTP сервера (секунд)"
+msgstr "Tempo massimo di attesa della risposta del server SMTP (secondi)"
+
+msgid "Если сервер не ответил за это время, отправка прерывается и посетитель не ждёт зря."
+msgstr "Se il server non risponde entro questo tempo, l'invio viene interrotto e il visitatore non aspetta invano."
+
+msgid "Шифрование SMTP"
+msgstr "Cifratura SMTP"
+
+msgid "SSL — соединение шифруется сразу (порт 465). TLS — шифрование включается командой STARTTLS (порт 587)."
+msgstr "SSL significa che la connessione è cifrata subito (porta 465). TLS significa che la cifratura si attiva con il comando STARTTLS (porta 587)."
+
+msgid "Нет"
+msgstr "Nessuna"
+
+msgid "SSL"
+msgstr "SSL"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "PHPmail Sender"
+msgstr "PHPmail Sender"
+
+msgid "Адрес в конверте письма (Return-Path), на него уходят отчёты о недоставке."
+msgstr "L'indirizzo nella busta del messaggio (Return-Path), lì arrivano gli avvisi di mancata consegna."
+
+msgid "PHPmail Hostname"
+msgstr "PHPmail Hostname"
+
+msgid "Имя, которым сервер представляется в команде HELO. По умолчанию берётся из имени сайта."
+msgstr "Il nome con cui il server si presenta nel comando HELO. Per impostazione predefinita viene preso dal nome del sito."
+
+msgid "PHPmail Reply-To"
+msgstr "PHPmail Reply-To"
+
+msgid "Адрес, который подставится в ответ на письмо. Если пусто, плагин подставит e-mail отправителя формы, когда он в ней есть."
+msgstr "L'indirizzo che verrà usato per rispondere al messaggio. Se è vuoto, il plugin mette l'e-mail del mittente del modulo, quando c'è."
+
+msgid "PHPmail From Name"
+msgstr "PHPmail From Name"
+
+msgid "Отображаемое имя отправителя письма."
+msgstr "Il nome visualizzato del mittente del messaggio."
+
+msgid "PHPmail From"
+msgstr "PHPmail From"
+
+msgid "Адрес отправителя. Должен быть на домене сайта, иначе письма попадут в спам."
+msgstr "L'indirizzo del mittente. Deve essere sul dominio del sito, altrimenti i messaggi finiranno nello spam."
+
+msgid "Подпись DKIM"
+msgstr "Firma DKIM"
+
+msgid "DKIM_domain"
+msgstr "DKIM_domain"
+
+msgid "Домен, для которого выпущена подпись, например example.com."
+msgstr "Il dominio per cui è stata emessa la firma, ad esempio example.com."
+
+msgid "DKIM_selector"
+msgstr "DKIM_selector"
+
+msgid "Селектор из DNS-записи вида selector._domainkey.example.com."
+msgstr "Il selettore del record DNS nella forma selector._domainkey.example.com."
+
+msgid "DKIM_private_string"
+msgstr "DKIM_private_string"
+
+msgid "Закрытый ключ целиком, вместе со строками BEGIN и END."
+msgstr "L'intera chiave privata, comprese le righe BEGIN e END."

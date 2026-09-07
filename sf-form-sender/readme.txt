@@ -4,7 +4,7 @@ Tags: forms, contact form, smtp, antispam, utm
 Requires at least: 7.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,18 @@ Submissions page.
 3. The SMTP server test with its live log.
 
 == Changelog ==
+
+= 1.1.0 =
+* The submissions table scrolls sideways instead of squeezing its columns,
+  and a soft shading on the edge shows the columns that are out of sight.
+* Column widths are set by dragging the border with the mouse, as in a
+  spreadsheet, and are remembered next to the column order; a double click on
+  the border restores the default width.
+* The notification message lists the fields as rows, a label above its value,
+  instead of a two column table that a long label stretched past the window.
+* The translation sources (.po and .pot) are back in the repository: they had
+  been left out of the first release, so a rebuild found every string
+  untranslated.
 
 = 1.0.0 =
 * First release.

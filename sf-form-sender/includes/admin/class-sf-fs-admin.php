@@ -20,6 +20,15 @@ class SF_FS_Admin {
 	/** Слаг страницы заявок. */
 	const PAGE_SUBMISSIONS = 'sf-form-sender-submissions';
 
+	/**
+	 * Действие admin-ajax для ширины колонок.
+	 *
+	 * Ширину меняют мышью, и переадресация после каждого движения границы
+	 * увела бы страницу с места, поэтому сохранение идёт отдельным запросом.
+	 * Проверки те же, что и у форм: права и подпись.
+	 */
+	const AJAX_WIDTHS = 'sf_fs_save_widths';
+
 	/** @var SF_FS_Admin|null */
 	private static $instance = null;
 
@@ -41,6 +50,7 @@ class SF_FS_Admin {
 		add_action( 'admin_post_sf_fs_save_locale', array( $this, 'save_locale' ) );
 		add_action( 'admin_post_sf_fs_save_columns', array( $this, 'save_columns' ) );
 		add_action( 'admin_post_sf_fs_submissions', array( $this, 'submissions_action' ) );
+		add_action( 'wp_ajax_' . self::AJAX_WIDTHS, array( $this, 'save_widths' ) );
 	}
 
 	/**
@@ -110,15 +120,19 @@ class SF_FS_Admin {
 			'sf-fs-admin',
 			'SF_FS_ADMIN',
 			array(
-				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-				'smtpNonce' => wp_create_nonce( SF_FS_Smtp_Test::ACTION ),
-				'texts'     => array(
-					'unsaved'      => __( 'Сохраните поля формы, перед тем как выполнить проверку.', 'sf-form-sender' ),
-					'testing'      => __( 'Идёт проверка…', 'sf-form-sender' ),
-					'testFailed'   => __( 'Проверка не удалась: сервер не ответил.', 'sf-form-sender' ),
-					'confirmAll'   => __( 'Удалить все заявки без возможности восстановления?', 'sf-form-sender' ),
-					'confirmSome'  => __( 'Удалить выбранные заявки?', 'sf-form-sender' ),
-					'confirmOne'   => __( 'Удалить заявку?', 'sf-form-sender' ),
+				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+				'smtpNonce'   => wp_create_nonce( SF_FS_Smtp_Test::ACTION ),
+				'widthAction' => self::AJAX_WIDTHS,
+				'widthNonce'  => wp_create_nonce( self::AJAX_WIDTHS ),
+				'widthMin'    => SF_FS_Columns::MIN_WIDTH,
+				'widthMax'    => SF_FS_Columns::MAX_WIDTH,
+				'texts'       => array(
+					'unsaved'       => __( 'Сохраните поля формы, перед тем как выполнить проверку.', 'sf-form-sender' ),
+					'testing'       => __( 'Идёт проверка…', 'sf-form-sender' ),
+					'testFailed'    => __( 'Проверка не удалась: сервер не ответил.', 'sf-form-sender' ),
+					'confirmAll'    => __( 'Удалить все заявки без возможности восстановления?', 'sf-form-sender' ),
+					'confirmSome'   => __( 'Удалить выбранные заявки?', 'sf-form-sender' ),
+					'confirmOne'    => __( 'Удалить заявку?', 'sf-form-sender' ),
 					'nothingPicked' => __( 'Ни одна заявка не выбрана.', 'sf-form-sender' ),
 				),
 			)
@@ -247,6 +261,22 @@ class SF_FS_Admin {
 		update_option( 'sf_fs_per_page', max( 5, min( 500, $per_page ) ) );
 
 		$this->back( self::PAGE_SUBMISSIONS, array( 'saved' => '1' ) );
+	}
+
+	/**
+	 * Сохранение ширины колонок, изменённой мышью.
+	 *
+	 * @return void
+	 */
+	public function save_widths() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Недостаточно прав.', 'sf-form-sender' ) ), 403 );
+		}
+		check_ajax_referer( self::AJAX_WIDTHS );
+
+		$widths = isset( $_POST['widths'] ) && is_array( $_POST['widths'] ) ? wp_unslash( $_POST['widths'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+
+		wp_send_json_success( array( 'widths' => SF_FS_Columns::save_widths( $widths ) ) );
 	}
 
 	/**

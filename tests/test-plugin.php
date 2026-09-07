@@ -417,6 +417,27 @@ check( 'список файлов в письме', false !== mb_strpos( $body, 
 check( 'блок меток в письме', false !== mb_strpos( $body, 'utm_source: google' ) );
 check( 'служебные данные в подвале письма', false !== mb_strpos( $body, '10.0.0.1' ) );
 
+/*
+ * Поля идут строками, а не таблицей: длинное название поля растягивало
+ * таблицу шире окна почтовой программы и уводило значения за край.
+ */
+check( 'поля письма не в таблице', false === mb_strpos( $body, '<table' ) && false === mb_strpos( $body, '<tr' ) );
+check( 'название поля с двоеточием отдельной строкой', false !== mb_strpos( $body, 'Ваше имя:</div>' ) );
+check( 'значение идёт следующим блоком', false !== mb_strpos( $body, 'Ваше имя:</div><div' ) );
+
+/*
+ * Текстовая версия собирается из этой же разметки: если перенос брать
+ * только от </tr>, всё письмо слипается в одну строку.
+ */
+$plain = SF_FS_Mailer::plain( $body );
+check( 'в текстовой версии нет разметки', false === mb_strpos( $plain, '<' ) );
+check( 'каждое поле в текстовой версии на своей строке', false !== mb_strpos( $plain, "Ваше имя:\nИван" ) );
+// nl2br оставляет за <br /> настоящий перевод строки: если не убрать его
+// вместе с тегом, на месте одного переноса выйдет два.
+check( 'перенос внутри значения не удвоился', false !== mb_strpos( $plain, "первая\nвторая" ) );
+// После блока меток идёт подвал письма — без переноса они слипаются.
+check( 'блок меток отделён от подвала', false !== mb_strpos( $plain, "utm_source: google\nСтраница" ) );
+
 /** Подставной PHPMailer: интересно, что плагин в нём выставит. */
 class SF_Test_Mailer {
 	public $Host = '', $Port = 0, $Timeout = 0, $SMTPSecure = 'x', $SMTPAutoTLS = null;
@@ -582,6 +603,37 @@ $visible = array_column( SF_FS_Columns::visible(), 'key' );
 check( 'выбранное поле показывается', in_array( 'name', $visible, true ) );
 check( 'постоянную колонку нельзя спрятать', in_array( '_delete', $visible, true ) );
 check( 'невыбранное поле скрыто', ! in_array( 'nombre', $visible, true ) );
+
+/*
+ * Ширина колонки: её тянут мышью в таблице, а порядок и видимость правят
+ * формой рядом. Одно не должно затирать другое.
+ */
+$by_key = array_column( SF_FS_Columns::all(), 'width', 'key' );
+same( 'у постоянной колонки своя ширина по умолчанию', 80, $by_key['_id'] );
+same( 'у поля формы общая ширина по умолчанию', SF_FS_Columns::DEFAULT_WIDTH, $by_key['name'] );
+
+SF_FS_Columns::save_widths( array( 'name' => 320, '_id' => 0 ) );
+$by_key = array_column( SF_FS_Columns::all(), 'width', 'key' );
+same( 'сохранённая ширина применена', 320, $by_key['name'] );
+same( 'нулевая ширина возвращает значение по умолчанию', 80, $by_key['_id'] );
+
+$columns = array_column( SF_FS_Columns::all(), null, 'key' );
+same( 'ширина по умолчанию сохранена отдельно от текущей', 180, $columns['name']['default_width'] );
+
+SF_FS_Columns::save_widths( array( 'name' => 5, '_date' => 99999 ) );
+$by_key = array_column( SF_FS_Columns::all(), 'width', 'key' );
+same( 'слишком узкую колонку подтянули к пределу', SF_FS_Columns::MIN_WIDTH, $by_key['name'] );
+same( 'слишком широкую колонку подрезали до предела', SF_FS_Columns::MAX_WIDTH, $by_key['_date'] );
+
+SF_FS_Columns::save_widths( array( 'name' => 260 ) );
+SF_FS_Columns::save( array( '_id', 'name' ), array( 'name' ) );
+$by_key = array_column( SF_FS_Columns::all(), 'width', 'key' );
+same( 'сохранение порядка не сбрасывает ширину', 260, $by_key['name'] );
+same( 'порядок при этом сохранён', '_id', array_column( SF_FS_Columns::all(), 'key' )[0] );
+
+SF_FS_Columns::save( array( '_id', 'name' ), array( 'name' ), array( 'name' => 210 ) );
+$by_key = array_column( SF_FS_Columns::all(), 'width', 'key' );
+same( 'переданные ширины сохранение принимает', 210, $by_key['name'] );
 
 delete_option( SF_FS_Columns::OPTION );
 

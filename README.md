@@ -43,9 +43,11 @@
 │   └── languages/               .pot, а также .po и .mo для семи языков
 ├── tests/
 │   ├── wp-stubs.php             заглушки WordPress и база на SQLite
-│   ├── test-plugin.php          серверная часть, 205 проверок
+│   ├── test-plugin.php          серверная часть, 222 проверки
 │   ├── test-front.py            перехват форм в настоящем Chromium, 58 проверок
+│   ├── test-admin-table.py      таблица заявок в Chromium, 25 проверок
 │   ├── front-fixture.html       стенд с четырьмя формами
+│   ├── render-list.php          разметка страницы «Заявки» для этого стенда
 │   └── integration/smoke.php    дымовая проверка на живом WordPress
 ├── tools/
 │   ├── build-languages.py       сбор строк, обновление .po, сборка .mo
@@ -105,8 +107,9 @@
 ## Запуск тестов
 
 ```bash
-php tests/test-plugin.php        # 205 проверок, нужен php-sqlite3, gd, exif
+php tests/test-plugin.php        # 222 проверки, нужен php-sqlite3, gd, exif
 python3 tests/test-front.py      # 58 проверок, нужен playwright и chromium
+python3 tests/test-admin-table.py # 25 проверок, тот же playwright и php
 python3 tools/build-languages.py # словари собраны и ничего не потеряно
 php build-zip.php                # архив собирается и он полный
 ```

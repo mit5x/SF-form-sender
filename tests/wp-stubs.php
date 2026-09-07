@@ -200,6 +200,49 @@ function admin_url( $path = '' ) { return 'https://example.com/wp-admin/' . $pat
 function wp_get_referer() { return 'https://example.com/'; }
 function wp_date( $format, $time ) { return date( $format, $time ); }
 function nocache_headers() {}
+
+/*
+ * Мелочь для страниц админки. Ведут себя как настоящие: печатают ровно то,
+ * что печатает WordPress, — иначе проверка разметки страницы проверяла бы
+ * заглушку, а не плагин.
+ */
+function current_user_can( $capability ) { return true; }
+function checked( $checked, $current = true, $echo = true ) { return sf_test_attr( $checked, $current, 'checked', $echo ); }
+function disabled( $disabled, $current = true, $echo = true ) { return sf_test_attr( $disabled, $current, 'disabled', $echo ); }
+function selected( $selected, $current = true, $echo = true ) { return sf_test_attr( $selected, $current, 'selected', $echo ); }
+
+function sf_test_attr( $value, $current, $type, $echo ) {
+	$out = (string) $value === (string) $current ? " $type='$type'" : '';
+	if ( $echo ) {
+		echo $out; // phpcs:ignore WordPress.Security.EscapeOutput
+	}
+	return $out;
+}
+
+function wp_create_nonce( $action = -1 ) { return substr( md5( 'sf-test-nonce-' . $action ), 0, 10 ); }
+
+function wp_nonce_field( $action = -1, $name = '_wpnonce', $referer = true, $echo = true ) {
+	$out = '<input type="hidden" name="' . esc_attr( $name ) . '" value="' . esc_attr( wp_create_nonce( $action ) ) . '">';
+	if ( $referer ) {
+		$out .= '<input type="hidden" name="_wp_http_referer" value="' . esc_attr( wp_get_referer() ) . '">';
+	}
+	if ( $echo ) {
+		echo $out; // phpcs:ignore WordPress.Security.EscapeOutput
+	}
+	return $out;
+}
+
+function paginate_links( $args = array() ) {
+	$out = '';
+	for ( $page = 1; $page <= (int) $args['total']; $page++ ) {
+		$out .= (int) $args['current'] === $page
+			? '<span class="page-numbers current">' . $page . '</span>'
+			: '<a class="page-numbers" href="' . esc_url( str_replace( '%#%', (string) $page, $args['base'] ) ) . '">' . $page . '</a>';
+	}
+	return $out;
+}
+
+function wp_kses_post( $html ) { return (string) $html; }
 function wp_mkdir_p( $dir ) { return is_dir( $dir ) || mkdir( $dir, 0777, true ); }
 
 function wp_upload_dir() {
@@ -592,6 +635,8 @@ require_once SF_FS_DIR . 'includes/class-sf-fs-captcha.php';
 require_once SF_FS_DIR . 'includes/class-sf-fs-mailer.php';
 require_once SF_FS_DIR . 'includes/class-sf-fs-interceptor.php';
 require_once SF_FS_DIR . 'includes/admin/class-sf-fs-columns.php';
+require_once SF_FS_DIR . 'includes/admin/class-sf-fs-admin.php';
+require_once SF_FS_DIR . 'includes/admin/class-sf-fs-submissions-page.php';
 
 /**
  * Метки перехвата — их объявляет главный файл плагина, который в тестах

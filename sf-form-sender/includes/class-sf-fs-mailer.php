@@ -96,8 +96,36 @@ class SF_FS_Mailer {
 
 		// Текстовая версия для почтовых программ без HTML.
 		if ( '' === (string) $mailer->AltBody ) {
-			$mailer->AltBody = wp_strip_all_tags( str_replace( array( '</tr>', '<br>', '<br />' ), "\n", $mailer->Body ) );
+			$mailer->AltBody = self::plain( (string) $mailer->Body );
 		}
+	}
+
+	/**
+	 * Письмо без разметки.
+	 *
+	 * Перенос строки ставится там, где кончается блок разметки: иначе после
+	 * снятия тегов всё письмо слипается в одну длинную строку. Пары вида
+	 * «<br /> и следом настоящий перевод строки» идут первыми: их оставил
+	 * nl2br, и без этого на месте одного переноса вышло бы два.
+	 *
+	 * @param string $html Тело письма.
+	 * @return string
+	 */
+	public static function plain( $html ) {
+		$breaks = array(
+			"<br />\r\n" => "\n",
+			"<br>\r\n"   => "\n",
+			"<br />\n"    => "\n",
+			"<br>\n"      => "\n",
+			'<br />'      => "\n",
+			'<br>'        => "\n",
+			'</div>'      => "\n",
+			'</p>'        => "\n",
+			'</pre>'      => "\n",
+			'</tr>'       => "\n",
+		);
+
+		return wp_strip_all_tags( strtr( $html, $breaks ) );
 	}
 
 	/**
@@ -233,6 +261,11 @@ class SF_FS_Mailer {
 	/**
 	 * Тело письма.
 	 *
+	 * Поля идут строками, а не таблицей в две колонки: длинное название поля
+	 * или длинный ответ растягивали таблицу шире окна почтовой программы, и
+	 * вторая колонка уезжала за край. У строк такой беды нет, а на узком
+	 * экране телефона они читаются даже лучше.
+	 *
 	 * @param array<string,mixed> $payload Данные заявки.
 	 * @return string
 	 */
@@ -243,14 +276,14 @@ class SF_FS_Mailer {
 				? $payload['labels'][ $key ]
 				: $key;
 
-			$rows .= '<tr>'
-				. '<th style="text-align:left;vertical-align:top;padding:6px 14px 6px 0;color:#555;font-weight:600;white-space:nowrap">' . esc_html( $label ) . '</th>'
-				. '<td style="vertical-align:top;padding:6px 0">' . nl2br( esc_html( (string) $value ) ) . '</td>'
-				. '</tr>';
+			$rows .= '<div style="margin:0 0 14px">'
+				. '<div style="color:#555;font-weight:600">' . esc_html( $label ) . ':</div>'
+				. '<div style="margin:2px 0 0;word-break:break-word">' . nl2br( esc_html( (string) $value ) ) . '</div>'
+				. '</div>';
 		}
 
 		$html = '<div style="font:14px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#1d2327">';
-		$html .= '<table style="border-collapse:collapse">' . $rows . '</table>';
+		$html .= $rows;
 
 		if ( $payload['files'] ) {
 			$names = array();

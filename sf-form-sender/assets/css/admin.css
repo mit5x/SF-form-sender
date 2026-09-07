@@ -247,20 +247,131 @@
 
 /* Список заявок --------------------------------------------------------- */
 
-.sf-fs-list .check-column {
+/*
+ * Прокрутка таблицы вбок.
+ *
+ * Рамка стоит на обёртке, а не на таблице: у прокручиваемого блока рамка
+ * уехала бы вместе с содержимым. Затемнения лежат поверх обёртки и щелчки
+ * не перехватывают, а показываются классами, которые ставит скрипт.
+ */
+.sf-fs-scroll {
+	position: relative;
+	margin: 0 0 8px;
+}
+
+.sf-fs-scroll__view {
+	overflow-x: auto;
+	overflow-y: hidden;
+	/* Полоса прокрутки видна всегда, а не только во время движения: иначе
+	   на macOS о спрятанных колонках сообщает одно лишь затемнение. */
+	scrollbar-width: thin;
+}
+
+.sf-fs-scroll__view::-webkit-scrollbar {
+	height: 10px;
+}
+
+.sf-fs-scroll__view::-webkit-scrollbar-thumb {
+	background: #c3c4c7;
+	border-radius: 5px;
+}
+
+.sf-fs-scroll__fade {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 32px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease;
+}
+
+.sf-fs-scroll__fade--left {
+	left: 0;
+	background: linear-gradient(to right, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0));
+}
+
+.sf-fs-scroll__fade--right {
+	right: 0;
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0));
+}
+
+.sf-fs-scroll.has-left .sf-fs-scroll__fade--left,
+.sf-fs-scroll.has-right .sf-fs-scroll__fade--right {
+	opacity: 1;
+}
+
+/*
+ * Ширины задаёт colgroup, поэтому раскладка фиксированная, а сама таблица
+ * шире рамки: узкая — растянется до края, широкая — прокрутится.
+ *
+ * Селектор с именем тега: класс sf-fs-list носят ещё и списки во вкладке
+ * «Документация», и правила таблицы им ни к чему.
+ */
+table.sf-fs-list {
+	width: 100%;
+	table-layout: fixed;
+}
+
+/* Пустая колонка-остаток: ширины ей не задано, поэтому свободное место
+   достаётся ей, а не размазывается по остальным колонкам. */
+table.sf-fs-list .sf-fs-list__rest {
+	padding: 0;
+}
+
+table.sf-fs-list td {
+	overflow: hidden;
+	word-break: break-word;
+}
+
+table.sf-fs-list .check-column {
 	width: 32px;
 	padding: 8px 0 8px 10px;
 	vertical-align: middle;
 }
 
-.sf-fs-col--files,
-.sf-fs-col--id {
-	width: 80px;
+table.sf-fs-list .sf-fs-list__check {
+	width: 32px;
 }
 
-.sf-fs-col--view,
-.sf-fs-col--delete {
-	width: 110px;
+/* Граница колонки, за которую тянут ------------------------------------- */
+
+.sf-fs-col {
+	position: relative;
+}
+
+.sf-fs-col__label {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.sf-fs-col__grip {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+	width: 9px;
+	height: 100%;
+	cursor: col-resize;
+	/* Полоска тонкая, а хватать её приходится мышью, поэтому область
+	   захвата шире самой линии и целиком лежит внутри ячейки: вылези она
+	   наружу — таблица стала бы шире себя самой и правое затемнение
+	   горело бы всегда. */
+	background: linear-gradient(to right, rgba(0, 0, 0, 0) 7px, #c3c4c7 7px, #c3c4c7 8px, rgba(0, 0, 0, 0) 8px);
+	touch-action: none;
+	user-select: none;
+}
+
+.sf-fs-col__grip:hover,
+.sf-fs-col.is-resizing .sf-fs-col__grip {
+	background: linear-gradient(to right, rgba(0, 0, 0, 0) 6px, #2271b1 6px, #2271b1 9px, rgba(0, 0, 0, 0) 9px);
+}
+
+/* Пока тянут границу, выделять текст незачем — только мешает. */
+body.sf-fs-resizing {
+	cursor: col-resize;
+	user-select: none;
 }
 
 .sf-fs-del {

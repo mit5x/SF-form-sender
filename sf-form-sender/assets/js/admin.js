@@ -206,6 +206,154 @@
 	}
 
 	/* --------------------------------------------------------------------- *
+	 * Таблица заявок: прокрутка вбок и растягивание колонок мышью
+	 * --------------------------------------------------------------------- */
+
+	function initTable() {
+		var wrap = $('#sf-fs-scroll');
+		var table = $('#sf-fs-table');
+		if (!wrap || !table) return;
+
+		var view = $('.sf-fs-scroll__view', wrap);
+		if (!view) return;
+
+		var min = CFG.widthMin || 40;
+		var max = CFG.widthMax || 1200;
+
+		var cols = {};
+		$$('col[data-key]', table).forEach(function (col) {
+			cols[col.getAttribute('data-key')] = col;
+		});
+
+		/* Затемнение горит с той стороны, куда таблица ещё не прокручена. */
+		function fades() {
+			var rest = view.scrollWidth - view.clientWidth;
+			wrap.classList.toggle('has-left', view.scrollLeft > 1);
+			wrap.classList.toggle('has-right', rest > 1 && view.scrollLeft < rest - 1);
+		}
+
+		/* Таблица не уже суммы своих колонок — иначе браузер сожмёт их сам. */
+		function least() {
+			var sum = 32;
+			$$('col[data-key]', table).forEach(function (col) {
+				sum += parseInt(col.style.width, 10) || 0;
+			});
+			table.style.minWidth = sum + 'px';
+		}
+
+		/* Ширины целиком: вернувшаяся к своей ширине по умолчанию уходит
+		   нулём и в настройках не оседает. */
+		function widths() {
+			var out = {};
+			$$('th[data-key]', table).forEach(function (th) {
+				var key = th.getAttribute('data-key');
+				var col = cols[key];
+				if (!col) return;
+				var px = parseInt(col.style.width, 10) || 0;
+				out[key] = px === (parseInt(th.getAttribute('data-default-width'), 10) || 0) ? 0 : px;
+			});
+			return out;
+		}
+
+		var pending = null;
+
+		function save() {
+			if (!CFG.widthNonce || !CFG.widthAction) return;
+
+			// Границу тянут рывками: складываем правки в одну отправку.
+			window.clearTimeout(pending);
+			pending = window.setTimeout(function () {
+				var body = new URLSearchParams();
+				body.set('action', CFG.widthAction);
+				body.set('_wpnonce', CFG.widthNonce);
+
+				var map = widths();
+				Object.keys(map).forEach(function (key) {
+					body.set('widths[' + key + ']', map[key]);
+				});
+
+				fetch(CFG.ajaxUrl, {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: body.toString()
+				}).catch(function () {
+					// Ширина колонки не то, ради чего стоит пугать человека
+					// сообщением: не сохранилось — вернётся прежняя.
+				});
+			}, 400);
+		}
+
+		function apply(col, width) {
+			col.style.width = Math.max(min, Math.min(max, Math.round(width))) + 'px';
+			least();
+			fades();
+		}
+
+		var drag = null;
+
+		table.addEventListener('pointerdown', function (e) {
+			var grip = e.target.closest ? e.target.closest('[data-sf-resize]') : null;
+			if (!grip || (e.button !== undefined && e.button !== 0)) return;
+
+			var th = grip.closest('th[data-key]');
+			var col = th && cols[th.getAttribute('data-key')];
+			if (!col) return;
+
+			e.preventDefault();
+			drag = {
+				col: col,
+				th: th,
+				grip: grip,
+				id: e.pointerId,
+				x: e.clientX,
+				width: th.getBoundingClientRect().width
+			};
+
+			th.classList.add('is-resizing');
+			document.body.classList.add('sf-fs-resizing');
+			if (grip.setPointerCapture) grip.setPointerCapture(e.pointerId);
+		});
+
+		table.addEventListener('pointermove', function (e) {
+			if (!drag) return;
+			apply(drag.col, drag.width + (e.clientX - drag.x));
+		});
+
+		function stop() {
+			if (!drag) return;
+			drag.th.classList.remove('is-resizing');
+			document.body.classList.remove('sf-fs-resizing');
+			if (drag.grip.releasePointerCapture) {
+				try { drag.grip.releasePointerCapture(drag.id); } catch (err) { /* указателя уже нет */ }
+			}
+			drag = null;
+			save();
+		}
+
+		table.addEventListener('pointerup', stop);
+		table.addEventListener('pointercancel', stop);
+
+		/* Двойной щелчок по границе — ширина по умолчанию, как в таблицах. */
+		table.addEventListener('dblclick', function (e) {
+			var grip = e.target.closest ? e.target.closest('[data-sf-resize]') : null;
+			if (!grip) return;
+
+			var th = grip.closest('th[data-key]');
+			var col = th && cols[th.getAttribute('data-key')];
+			if (!col) return;
+
+			apply(col, parseInt(th.getAttribute('data-default-width'), 10) || 120);
+			save();
+		});
+
+		view.addEventListener('scroll', fades);
+		window.addEventListener('resize', fades);
+		least();
+		fades();
+	}
+
+	/* --------------------------------------------------------------------- *
 	 * Список заявок
 	 * --------------------------------------------------------------------- */
 
@@ -259,6 +407,7 @@
 		initPeek();
 		initSmtp();
 		initColumns();
+		initTable();
 		initList();
 	}
 

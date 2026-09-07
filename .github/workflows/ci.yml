@@ -100,9 +100,14 @@ jobs:
           set -e
           python tools/build-languages.py | tee /tmp/languages.log
 
-          if grep -vq 'без перевода 0' /tmp/languages.log; then
+          # Смотрим только строки про языки: «строк в каталоге: 242» под
+          # «без перевода 0» не подходит никогда, и проверка на grep -vq по
+          # всему выводу срабатывала всегда, даже когда всё переведено.
+          missing=$( grep 'без перевода' /tmp/languages.log | grep -v 'без перевода 0$' || true )
+
+          if [ -n "$missing" ]; then
             echo "::error::Есть строки без перевода. Переведите их в languages/*.po."
-            grep -v 'без перевода 0' /tmp/languages.log || true
+            echo "$missing"
             exit 1
           fi
 

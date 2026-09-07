@@ -114,6 +114,22 @@ with sync_playwright() as p:
     view = page.locator('.sf-fs-scroll__view')
     wrap = page.locator('.sf-fs-scroll')
 
+    def opacity(selector):
+        return float(page.evaluate(
+            's => getComputedStyle(document.querySelector(s)).opacity', selector))
+
+    def opacity_settles(selector, visible):
+        """Затемнение проявляется плавно, поэтому ждём конца перехода.
+
+        Без ожидания проверка читает середину анимации, и на медленной
+        машине получает 0.3 там, где через миг будет 1.
+        """
+        for _ in range(40):
+            if (opacity(selector) > 0.5) is visible:
+                return True
+            page.wait_for_timeout(50)
+        return (opacity(selector) > 0.5) is visible
+
     # ------------------------------------------------------------------
     group('Прокрутка таблицы вбок')
 
@@ -131,8 +147,8 @@ with sync_playwright() as p:
     check('слева затемнения нет', 'has-left' not in (wrap.get_attribute('class') or ''))
     check('затемнение не перехватывает щелчки',
           page.evaluate("getComputedStyle(document.querySelector('.sf-fs-scroll__fade--right')).pointerEvents") == 'none')
-    check('справа затемнение видно',
-          float(page.evaluate("getComputedStyle(document.querySelector('.sf-fs-scroll__fade--right')).opacity")) > 0.5)
+    check('справа затемнение видно', opacity_settles('.sf-fs-scroll__fade--right', True))
+    check('слева затемнение не видно', opacity_settles('.sf-fs-scroll__fade--left', False))
 
     view.evaluate('el => { el.scrollLeft = 200; }')
     page.wait_for_timeout(100)
